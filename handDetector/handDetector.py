@@ -130,8 +130,8 @@ def main():
 			gray = img
 				
 			#Blurring Grayscale Image for better processing
-			grayBlurred = cv2.bilateralFilter(gray,9,75,75)
-			
+			#grayBlurred = cv2.bilateralFilter(gray,9,75,75)
+			grayBlurred = gray
 			
 			
 			#Adding Blurred Gray Image to difference checker Array
