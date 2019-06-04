@@ -14,7 +14,7 @@ def playWarning():
 	print("Drop Guard")
 	
 
-def getDiff(frameArray):
+def getDiff(frameArray, scaleFactor):
 	diff = cv2.absdiff(frameArray[0], frameArray[1])
 			
 	#Downscaling for performance
@@ -130,7 +130,7 @@ def main():
 			#Finding the difference between the two frames (Looking for change)
 			
 			
-			diffThread = threading.Thread(target=getDiff, args=(frameArray,))
+			diffThread = Thread(target=getDiff, args=(frameArray,scaleFactor))
 			
 			diffThread.start()
 			
