@@ -1,0 +1,2 @@
+No Threading Average: .0330s
+With Threading Average: 

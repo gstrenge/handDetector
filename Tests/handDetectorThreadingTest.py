@@ -14,7 +14,7 @@ def playWarning():
 	print("Drop Guard")
 	
 	
-	
+
 
 def main():	
 		
@@ -26,7 +26,8 @@ def main():
 		cv2.normalize(a, a, 0, 65535, cv2.NORM_MINMAX) # extend contrast
 		np.right_shift(a, 8, a) # fit data into 8 bits
 		
-		
+		time_testSum = 0
+		time_testIters = 0
 		
 		#cap = cv2.VideoCapture(0)
 
@@ -239,7 +240,9 @@ def main():
 				color = (255,255,255)
 			
 			time_testPoint2 = time.time()
-			print(str(time_testPoint2-time_testPoint1))
+			time_testSum += time_testPoint2-time_testPoint1
+			time_testIters += 1
+			print(time_testSum / time_testIters)
 			
 			#Drawing Danger Rectangle
 			cv2.rectangle(img, (width/2-rectWidth - extraSizeToRectx/2 , height - rectHeight - extraSizeToRecty), (width/2+rectWidth + extraSizeToRectx/2 , height), color, 0)
