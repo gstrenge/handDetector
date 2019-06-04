@@ -17,18 +17,11 @@ slightDangerPinBool = False
 dropGuardPinBool = False
 
 
-	
-
 def playWarning():
 	#winsound.Beep(1000,90)
 	print("Drop Guard")
 	
-	
-	
-
 def main():	
-		
-	
 	
 	GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(slightDangerPin,GPIO.OUT)
@@ -303,24 +296,32 @@ def main():
 		cv2.destroyAllWindows()
 
 
-try:
-	main()
-except Exception as e:
-	print e
-	
-	GPIO.output(dropGuardPin, False)
-	GPIO.output(slightDangerPin, False)
-	
-	sdp = False
-	dgp = False
-	
-	for i in range(5):
-		GPIO.output(dropGuardPin, -dgp)
-		GPIO.output(slightDangerPin, -sdp)
-		time.sleep(1)
+		
+while True:
+	try:
+		main()
+	except Exception as e:
+		print e
+		
+		GPIO.output(dropGuardPin, False)
+		GPIO.output(slightDangerPin, False)
+		
+		sdp = False
+		#dgp = False
+		
+		for i in range(5):
+			sdp = not sdp
+			#dgp = not dpg
+			
+			#GPIO.output(dropGuardPin, dgp)
+			GPIO.output(slightDangerPin, sdp)
+			
+			time.sleep(1)
 
-finally:
-    GPIO.cleanup()
+	finally:
+		GPIO.cleanup()
+		
+	break
     
 
 
