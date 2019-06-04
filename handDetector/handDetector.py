@@ -32,6 +32,9 @@ def main():
 	GPIO.output(slightDangerPin, False)
 	GPIO.output(runningPin, False)
 	
+	#Testing Try
+	#raise ValueError('A very specific bad thing happened.')
+	
 	
 	with Lepton() as l:
 		
@@ -309,7 +312,7 @@ while True:
 		sdp = False
 		#dgp = False
 		
-		for i in range(5):
+		for i in range(6):
 			sdp = not sdp
 			#dgp = not dpg
 			
@@ -321,7 +324,7 @@ while True:
 	finally:
 		GPIO.cleanup()
 		
-	break
+	
     
 
 
