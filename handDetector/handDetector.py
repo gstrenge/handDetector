@@ -88,7 +88,7 @@ def main():
 		#time.sleep(2)
 		
 		while True:
-
+			
 			#----------------Getting Frame of Video Feed--------------------
 			#ret, img = cap.read()
 			img, frame_id = l.capture()
@@ -120,8 +120,7 @@ def main():
 			dangerVelocity = False
 			
 			
-			
-			
+
 			#----------------------------------------------------------------
 			#-----------------Difference (Danger Check #1)-------------------
 			#----------------------------------------------------------------
@@ -260,7 +259,7 @@ def main():
 				dangerVelocity = True
 			else:
 				color = (255,255,255)
-				
+			
 			
 			#Drawing Danger Rectangle
 			cv2.rectangle(img, (width/2-rectWidth - extraSizeToRectx/2 , height - rectHeight - extraSizeToRecty), (width/2+rectWidth + extraSizeToRectx/2 , height), color, 0)
