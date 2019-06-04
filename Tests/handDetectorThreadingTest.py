@@ -6,14 +6,25 @@ import time
 from threading import Thread
 from pylepton import Lepton
 
-
+sum = 0
 	
 
 def playWarning():
 	#winsound.Beep(1000,90)
 	print("Drop Guard")
 	
+
+def getDiff(frameArray):
+	diff = cv2.absdiff(frameArray[0], frameArray[1])
+			
+	#Downscaling for performance
+	diffSmall = cv2.resize(diff, None, fx = scaleFactor, fy = scaleFactor)
 	
+	#Adding upwhite value in each pixel (shows movement)
+	global sum
+	sum =0
+	for pixel in np.nditer(diffSmall, order='C'):
+		sum += pixel
 
 
 def main():	
@@ -119,21 +130,18 @@ def main():
 			#Finding the difference between the two frames (Looking for change)
 			
 			
-
-			diff = cv2.absdiff(frameArray[0], frameArray[1])
+			diffThread = threading.Thread(target=getDiff, args=(frameArray,))
 			
-			#Downscaling for performance
-			diffSmall = cv2.resize(diff, None, fx = scaleFactor, fy = scaleFactor)
+			diffThread.start()
 			
-			#Adding upwhite value in each pixel (shows movement)
-			sum=0
-			for pixel in np.nditer(diffSmall, order='C'):
-				sum += pixel
+			diffThread.join()
+			
+			
 			
 			#sum = cv2.sumElems(diffSmall)
 			#sum = frame_id
 			
-			
+			global sum
 			print("Sum: " + str(sum))
 				
 			#If there is enough movement, there is danger (60000 is just a tested value that works)
