@@ -32,6 +32,7 @@ def main():
 	GPIO.output(slightDangerPin, False)
 	GPIO.output(runningPin, False)
 	
+	
 	#Testing Try
 	#raise ValueError('A very specific bad thing happened.')
 	
