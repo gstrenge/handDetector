@@ -144,14 +144,17 @@ def main():
 			
 			#Adding upwhite value in each pixel (shows movement)
 			sum=0
+			totalPix = 0
 			for pixel in np.nditer(diffSmall, order='C'):
 				sum += pixel
+				totalPix += 1
 			
 			#sum = cv2.sumElems(diffSmall)
 			#sum = frame_id
 			
 			
 			print("Sum: " + str(sum))
+			print("Average: " + str(sum/totalPix))
 				
 			#If there is enough movement, there is danger (60000 is just a tested value that works)
 			if sum > 60000:
@@ -170,6 +173,9 @@ def main():
 			
 			
 			#Thresholding to only bright objects -------------------------------------------To Add Infared Stuff Here
+			
+			
+			#Change 100 to average pixel color?
 			ret,thresh1 = cv2.threshold(grayBlurred,100,255,cv2.THRESH_BINARY)
 			
 			#Using Special Threshold Method
