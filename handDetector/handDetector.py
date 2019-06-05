@@ -84,11 +84,18 @@ def main():
 
 		#time.sleep(2)
 		
+		previousId = 0
+		
 		while True:
 			
 			#----------------Getting Frame of Video Feed--------------------
 			#ret, img = cap.read()
 			img, frame_id = l.capture()
+			
+			if frame_id == previousId:
+				print ("Identical")
+				continue
+			
 			cv2.normalize(img, img, 0, 65535, cv2.NORM_MINMAX) # extend contrast
 			np.right_shift(img, 8, img) # fit data into 8 bits
 			img = cv2.resize(img, None, fx = scaleFactorOverall, fy = scaleFactorOverall)
@@ -144,20 +151,22 @@ def main():
 			diffSmall = cv2.resize(diff, None, fx = scaleFactor, fy = scaleFactor)
 			
 			#Adding upwhite value in each pixel (shows movement)
-			sum=0
-			totalPix = 0
+			sum = 0
+			
 			for pixel in np.nditer(diffSmall, order='C'):
-				print(pixel)
+				
+				#print(pixel)
 				
 				sum += pixel
-				totalPix += 1
+				
 			
 			#sum = cv2.sumElems(diffSmall)
 			#sum = frame_id
 			
 			
 			#print("Sum: " + str(sum))
-			#print("Average: " + str(sum/totalPix))
+			
+			
 				
 			#If there is enough movement, there is danger (60000 is just a tested value that works)
 			if sum > 60000:
@@ -179,7 +188,9 @@ def main():
 			
 			
 			#Change 100 to average pixel color?
-			ret,thresh1 = cv2.threshold(grayBlurred,100,255,cv2.THRESH_BINARY)
+			thresholdValue = np.mean(grayBlurred)
+			print(thresholdValue)
+			ret,thresh1 = cv2.threshold(grayBlurred,thresholdValue,255,cv2.THRESH_BINARY)
 			
 			#Using Special Threshold Method
 			#ret2, thresh2 = cv2.threshold(thresh1, 0,255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -298,11 +309,17 @@ def main():
 			frameCounter += 1
 			frameTime += dt
 			
+			previousId = frame_id
+			
 			
 			GPIO.output(dropGuardPin, dropGuardPinBool)
 			GPIO.output(runningPin, runningPinBool)
 			GPIO.output(slightDangerPin, slightDangerPinBool)
 
+			#xd = raw_input()
+			#if xd == 's':
+			#	cv2.imwrite("/home/pi/Desktop/test/output1232323.jpg", diffSmall)
+			
 			
 		#cap.release()
 		cv2.destroyAllWindows()
@@ -332,7 +349,7 @@ while True:
 
 	finally:
 		GPIO.cleanup()
-		
+	break
 	
     
 

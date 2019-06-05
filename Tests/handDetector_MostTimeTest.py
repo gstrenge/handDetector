@@ -78,11 +78,15 @@ def main():
 
 		#time.sleep(2)
 		
+		
+		
 		while True:
 			
 			#----------------Getting Frame of Video Feed--------------------
 			#ret, img = cap.read()
 			img, frame_id = l.capture()
+			
+			
 			cv2.normalize(img, img, 0, 65535, cv2.NORM_MINMAX) # extend contrast
 			np.right_shift(img, 8, img) # fit data into 8 bits
 			
@@ -321,6 +325,8 @@ def main():
 			#Adding to Frame Counter
 			frameCounter += 1
 			frameTime += dt
+			
+			
 			
 			
 
