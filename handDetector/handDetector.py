@@ -147,6 +147,8 @@ def main():
 			sum=0
 			totalPix = 0
 			for pixel in np.nditer(diffSmall, order='C'):
+				print(pixel)
+				
 				sum += pixel
 				totalPix += 1
 			
@@ -154,8 +156,8 @@ def main():
 			#sum = frame_id
 			
 			
-			print("Sum: " + str(sum))
-			print("Average: " + str(sum/totalPix))
+			#print("Sum: " + str(sum))
+			#print("Average: " + str(sum/totalPix))
 				
 			#If there is enough movement, there is danger (60000 is just a tested value that works)
 			if sum > 60000:
