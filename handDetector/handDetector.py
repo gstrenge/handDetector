@@ -18,6 +18,12 @@ rightHandPin = 35
 greenLEDPinBool = False
 yellowLEDPinBool = False
 redLEDPinBool = False
+leftHandPinBool = False
+rightHandPinBool = False
+
+
+GPIO.setmode(GPIO.BOARD)
+
 
 
 def playWarning():
@@ -25,15 +31,23 @@ def playWarning():
 	print("Drop Guard")
 	
 def main():	
+
+	global redLEDPin
 	
-	GPIO.setmode(GPIO.BOARD)
+	
+
+	
 	GPIO.setup(yellowLEDPin,GPIO.OUT)
-	GPIO.setup(redLEDPin,GPIO.OUT)
+	GPIO.setup(redLEDPin, GPIO.OUT)
 	GPIO.setup(greenLEDPin,GPIO.OUT)
+	GPIO.setup(leftHandPin, GPIO.OUT)
+	GPIO.setup(rightHandPin, GPIO.OUT)
 	
 	GPIO.output(redLEDPin, False)
 	GPIO.output(yellowLEDPin, False)
 	GPIO.output(greenLEDPin, False)
+	GPIO.output(leftHandPin, False)
+	GPIO.output(rightHandPin, False)
 	
 	
 	#Testing Try
@@ -176,7 +190,7 @@ def main():
 			#If there is enough movement, there is danger (60000 is just a tested value that works)
 			if sum > 60000:
 				#dangerDifference = True
-				redLEDPin = True
+				redLEDPinBool = True
 				
 		
 		
@@ -195,7 +209,7 @@ def main():
 			#Change 100 to average pixel color?
 			thresholdValue = np.mean(grayBlurred)
 			print(thresholdValue)
-			ret,thresh1 = cv2.threshold(grayBlurred,thresholdValue,255,cv2.THRESH_BINARY)
+			ret,thresh1 = cv2.threshold(grayBlurred,100,255,cv2.THRESH_BINARY)
 			
 			#Using Special Threshold Method
 			#ret2, thresh2 = cv2.threshold(thresh1, 0,255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -241,8 +255,8 @@ def main():
 			
 			
 			#-----------------Drawing Velocity/Position on Screen-------------------
-			#cv2.circle(img, (centerx, centery), 10, (0,0,255))
-			#cv2.circle(img, (futurePos), 10, (0,0,255))
+			cv2.circle(img, (centerx, centery), 10, (0,0,255))
+			cv2.circle(img, (futurePos), 10, (0,0,255))
 			#cv2.arrowedLine(img, (centerx, centery), (futurePos[0], futurePos[1]), (0,0,255), 3)
 			
 			
@@ -327,7 +341,7 @@ def main():
 			GPIO.output(greenLEDPin, greenLEDPinBool)
 			GPIO.output(yellowLEDPin, yellowLEDPinBool)
 			GPIO.output(leftHandPin, leftHandPinBool)
-			GPIO.output(rightHandPin, rightHandBool)
+			GPIO.output(rightHandPin, rightHandPinBool)
 
 			#xd = raw_input()
 			#if xd == 's':
@@ -337,14 +351,19 @@ def main():
 		#cap.release()
 		cv2.destroyAllWindows()
 
-
+main()
 		
 while True:
 	try:
-		main()
+		pass#main()
 	except Exception as e:
 		print e
 		
+		
+		
+		GPIO.output(greenLEDPin, False)
+		GPIO.output(leftHandPin, False)
+		GPIO.output(rightHandPin, False)
 		GPIO.output(redLEDPin, False)
 		GPIO.output(yellowLEDPin, False)
 		
