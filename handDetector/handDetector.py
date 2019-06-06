@@ -8,16 +8,16 @@ from threading import Thread
 from pylepton import Lepton
 
 
-slightDangerPin = 7
-dropGuardPin = 13
-runningPin = 11	f
+yellowLEDPin = 7
+redLEDPin = 13
+greenLEDPin = 11	
 
 leftHandPin = 37
 rightHandPin = 35
 
-runningPinBool = False
-slightDangerPinBool = False
-dropGuardPinBool = False
+greenLEDPinBool = False
+yellowLEDPinBool = False
+redLEDPinBool = False
 
 
 def playWarning():
@@ -27,13 +27,13 @@ def playWarning():
 def main():	
 	
 	GPIO.setmode(GPIO.BOARD)
-	GPIO.setup(slightDangerPin,GPIO.OUT)
-	GPIO.setup(dropGuardPin,GPIO.OUT)
-	GPIO.setup(runningPin,GPIO.OUT)
+	GPIO.setup(yellowLEDPin,GPIO.OUT)
+	GPIO.setup(redLEDPin,GPIO.OUT)
+	GPIO.setup(greenLEDPin,GPIO.OUT)
 	
-	GPIO.output(dropGuardPin, False)
-	GPIO.output(slightDangerPin, False)
-	GPIO.output(runningPin, False)
+	GPIO.output(redLEDPin, False)
+	GPIO.output(yellowLEDPin, False)
+	GPIO.output(greenLEDPin, False)
 	
 	
 	#Testing Try
@@ -107,9 +107,11 @@ def main():
 			
 			#img = cv2.resize(img, (0,0), fx=5, fy=5) 
 			
-			runningPinBool = True
-			dropGuardPinBool = False
-			slightDangerPinBool = False
+			greenLEDPinBool = True
+			redLEDPinBool = False
+			yellowLEDPinBool = False
+			leftHandPinBool = False
+			rightHandPinBool = False
 			
 			#---------------Frame Rate Counter---------------------
 			if frameTime >= 1:
@@ -174,7 +176,7 @@ def main():
 			#If there is enough movement, there is danger (60000 is just a tested value that works)
 			if sum > 60000:
 				#dangerDifference = True
-				slightDangerPinBool = True
+				redLEDPin = True
 				
 		
 		
@@ -259,6 +261,12 @@ def main():
 			for i in range(len(contours)):
 				hull.append(cv2.convexHull(contours[i], False))
 			
+			if len(contours) == 1:
+				leftHandPinBool = True
+			elif len(contours) >= 2:
+				leftHandPinBool = True
+				rightHandPinBool = True
+			
 			for i in range(len(contours)):
 				#Drawing Contours
 				cv2.drawContours(img, contours, i, (255,255,255), 1, 1, hierarchy)
@@ -298,8 +306,8 @@ def main():
 			
 			if dangerDifference or dangerVelocity:
 				#print("Multi")
-				dropGuardPinBool = True
-				runningPinBool = False
+				redLEDPinBool = True
+				greenLEDPinBool = False
 				thread = Thread(target=playWarning)
 				thread.daemon = True
 				thread.start()
@@ -315,9 +323,11 @@ def main():
 			previousId = frame_id
 			
 			
-			GPIO.output(dropGuardPin, dropGuardPinBool)
-			GPIO.output(runningPin, runningPinBool)
-			GPIO.output(slightDangerPin, slightDangerPinBool)
+			GPIO.output(redLEDPin, redLEDPinBool)
+			GPIO.output(greenLEDPin, greenLEDPinBool)
+			GPIO.output(yellowLEDPin, yellowLEDPinBool)
+			GPIO.output(leftHandPin, leftHandPinBool)
+			GPIO.output(rightHandPin, rightHandBool)
 
 			#xd = raw_input()
 			#if xd == 's':
@@ -335,8 +345,8 @@ while True:
 	except Exception as e:
 		print e
 		
-		GPIO.output(dropGuardPin, False)
-		GPIO.output(slightDangerPin, False)
+		GPIO.output(redLEDPin, False)
+		GPIO.output(yellowLEDPin, False)
 		
 		sdp = False
 		#dgp = False
@@ -345,8 +355,8 @@ while True:
 			sdp = not sdp
 			#dgp = not dpg
 			
-			#GPIO.output(dropGuardPin, dgp)
-			GPIO.output(slightDangerPin, sdp)
+			#GPIO.output(redLEDPin, dgp)
+			GPIO.output(yellowLEDPin, sdp)
 			
 			time.sleep(1)
 
