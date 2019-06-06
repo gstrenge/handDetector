@@ -10,7 +10,10 @@ from pylepton import Lepton
 
 slightDangerPin = 7
 dropGuardPin = 13
-runningPin = 11	
+runningPin = 11	f
+
+leftHandPin = 37
+rightHandPin = 35
 
 runningPinBool = False
 slightDangerPinBool = False
