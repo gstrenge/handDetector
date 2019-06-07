@@ -15,11 +15,20 @@ greenLEDPin = 11
 leftHandPin = 37
 rightHandPin = 35
 
+makeSafePin = 38
+dropGuardPin = 40
+
+
+
+
 greenLEDPinBool = False
 yellowLEDPinBool = False
 redLEDPinBool = False
 leftHandPinBool = False
 rightHandPinBool = False
+makeSafePinBool = False
+dropGuardPinBool = False
+
 
 
 GPIO.setmode(GPIO.BOARD)
@@ -42,12 +51,16 @@ def main():
 	GPIO.setup(greenLEDPin,GPIO.OUT)
 	GPIO.setup(leftHandPin, GPIO.OUT)
 	GPIO.setup(rightHandPin, GPIO.OUT)
+	GPIO.setup(makeSafePin, GPIO.OUT)
+	GPIO.setup(dropGuardPin, GPIO.OUT)
 	
 	GPIO.output(redLEDPin, False)
 	GPIO.output(yellowLEDPin, False)
 	GPIO.output(greenLEDPin, False)
 	GPIO.output(leftHandPin, False)
 	GPIO.output(rightHandPin, False)
+	GPIO.output(makeSafePin, False)
+	GPIO.output(dropGuardPin, False)
 	
 	
 	#Testing Try
@@ -126,6 +139,9 @@ def main():
 			yellowLEDPinBool = False
 			leftHandPinBool = False
 			rightHandPinBool = False
+			makeSafePinBool = False
+			dropGuardPinBool = False
+
 			
 			#---------------Frame Rate Counter---------------------
 			if frameTime >= 1:
@@ -191,6 +207,10 @@ def main():
 			if sum > 60000:
 				#dangerDifference = True
 				redLEDPinBool = True
+				dropGuardPinBool = True
+				makeSafePinBool = True
+				GPIO.output(makeSafePin, makeSafePinBool)
+				GPIO.output(dropGuardPin, dropGuardPinBool)
 				
 		
 		
@@ -322,9 +342,20 @@ def main():
 				#print("Multi")
 				redLEDPinBool = True
 				greenLEDPinBool = False
+				dropGuardPinBool = True
+				makeSafePinBool = True
+				GPIO.output(makeSafePin, makeSafePinBool)
+				GPIO.output(dropGuardPin, dropGuardPinBool)
 				thread = Thread(target=playWarning)
 				thread.daemon = True
 				thread.start()
+				
+				GPIO.output(redLEDPin, redLEDPinBool)
+				GPIO.output(greenLEDPin, greenLEDPinBool)
+				GPIO.output(yellowLEDPin, yellowLEDPinBool)
+				GPIO.output(leftHandPin, leftHandPinBool)
+				GPIO.output(rightHandPin, rightHandPinBool)
+				
 			
 			k = cv2.waitKey(45) & 0xff
 			if k == 27:
@@ -337,11 +368,7 @@ def main():
 			previousId = frame_id
 			
 			
-			GPIO.output(redLEDPin, redLEDPinBool)
-			GPIO.output(greenLEDPin, greenLEDPinBool)
-			GPIO.output(yellowLEDPin, yellowLEDPinBool)
-			GPIO.output(leftHandPin, leftHandPinBool)
-			GPIO.output(rightHandPin, rightHandPinBool)
+			
 
 			#xd = raw_input()
 			#if xd == 's':
