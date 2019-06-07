@@ -303,6 +303,9 @@ def main():
 			
 			for i in range(len(contours)):
 				#Drawing Contours
+				area = cv2.contourArea(contours[i])
+				if area < 500:
+					continue
 				cv2.drawContours(img, contours, i, (255,255,255), 1, 1, hierarchy)
 				#Drawing Hull
 				#cv2.drawContours(img, hull, i, (255,0,0), 3, 8)
@@ -344,17 +347,19 @@ def main():
 				greenLEDPinBool = False
 				dropGuardPinBool = True
 				makeSafePinBool = True
-				GPIO.output(makeSafePin, makeSafePinBool)
-				GPIO.output(dropGuardPin, dropGuardPinBool)
+				
 				thread = Thread(target=playWarning)
 				thread.daemon = True
 				thread.start()
+			
+			GPIO.output(makeSafePin, makeSafePinBool)
+			GPIO.output(dropGuardPin, dropGuardPinBool)
 				
-				GPIO.output(redLEDPin, redLEDPinBool)
-				GPIO.output(greenLEDPin, greenLEDPinBool)
-				GPIO.output(yellowLEDPin, yellowLEDPinBool)
-				GPIO.output(leftHandPin, leftHandPinBool)
-				GPIO.output(rightHandPin, rightHandPinBool)
+			GPIO.output(redLEDPin, redLEDPinBool)
+			GPIO.output(greenLEDPin, greenLEDPinBool)
+			GPIO.output(yellowLEDPin, yellowLEDPinBool)
+			GPIO.output(leftHandPin, leftHandPinBool)
+			GPIO.output(rightHandPin, rightHandPinBool)
 				
 			
 			k = cv2.waitKey(45) & 0xff
