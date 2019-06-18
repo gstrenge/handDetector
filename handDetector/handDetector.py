@@ -36,6 +36,17 @@ dropGuardPinBool = False
 
 GPIO.setmode(GPIO.BOARD)
 
+def checkPin(pinNum):
+	return GPIO.input(pinNum)
+
+def waitUntilPin(pinNum, desiredValue, reCheckInterval):
+	while True:
+		pinInput = checkPin(pinNum)
+		print(pinInput)
+		if pinInput == value:
+			yield pinInput
+		else:
+			time.sleep(reCheckInterval)
 
 
 def playWarning():
@@ -378,7 +389,7 @@ def main():
 				previousId = frame_id
 
 			else:
-				waitUntilPin(commsPin, True, .1)
+				waitUntilPin(commsPin, 1, .1)
 
 
 
@@ -426,13 +437,4 @@ while True:
 		pass
 	break
 
-def checkPin(pinNum):
-	return GPIO.input(pinNum)
 
-def waitUntilPin(pinNum, desiredValue, reCheckInterval):
-	while True:
-		pinInput = checkPin(pinNum)
-		if pinInput == value:
-			yield pinInput
-		else:
-			time.sleep(reCheckInterval)
