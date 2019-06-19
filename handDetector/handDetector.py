@@ -18,7 +18,7 @@ rightHandPin = 35
 makeSafePin = 38
 dropGuardPin = 40
 
-commsPin = 36
+commsPin = 33
 
 
 
@@ -43,7 +43,7 @@ def waitUntilPin(pinNum, desiredValue, reCheckInterval):
 	while True:
 		pinInput = checkPin(pinNum)
 		print(pinInput)
-		if pinInput == value:
+		if pinInput == desiredValue:
 			yield pinInput
 		else:
 			time.sleep(reCheckInterval)
@@ -67,7 +67,7 @@ def main():
 	GPIO.setup(rightHandPin, GPIO.OUT)
 	GPIO.setup(makeSafePin, GPIO.OUT)
 	GPIO.setup(dropGuardPin, GPIO.OUT)
-	GPIO.setup(commsPin, GPIO.IN)
+	GPIO.setup(commsPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 	GPIO.output(redLEDPin, False)
 	GPIO.output(yellowLEDPin, False)
@@ -77,6 +77,7 @@ def main():
 	GPIO.output(makeSafePin, False)
 	GPIO.output(dropGuardPin, False)
 
+	ttt = waitUntilPin(commsPin, 0, .1)
 
 	#Testing Try
 	#raise ValueError('A very specific bad thing happened.')
@@ -133,7 +134,7 @@ def main():
 
 		while True:
 
-			if checkPin(commsPin) == 1:
+			if checkPin(commsPin) == 0:
 				#----------------Getting Frame of Video Feed--------------------
 				#ret, img = cap.read()
 				img, frame_id = l.capture()
@@ -387,7 +388,13 @@ def main():
 				previousId = frame_id
 
 			else:
-				waitUntilPin(commsPin, 1, .1)
+				GPIO.output(makeSafePin, False)
+				GPIO.output(dropGuardPin, False)
+				
+				next(ttt)
+				
+				
+
 
 
 

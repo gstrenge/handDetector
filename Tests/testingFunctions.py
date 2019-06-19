@@ -20,14 +20,12 @@
 
 import RPi.GPIO as GPIO
 import time
-def checkPin(pinNum):
-	return GPIO.input(pinNum)
 
 
-commsPin = 36
+commsPin = 33
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(commsPin, GPIO.IN)
+GPIO.setup(commsPin, GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
 while True:
-    print(checkPin(36))
-    time.sleep(1)
+    print(GPIO.input(33))
+    time.sleep(.1)
