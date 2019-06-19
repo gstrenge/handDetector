@@ -122,7 +122,7 @@ def main():
 
 		while True:
 
-			if checkPin(commsPin) == True:
+			if checkPin(commsPin) == 1:
 				#----------------Getting Frame of Video Feed--------------------
 				#ret, img = cap.read()
 				img, frame_id = l.capture()
@@ -210,10 +210,10 @@ def main():
 
 				#If there is enough movement, there is danger (60000 is just a tested value that works)
 				if sum > 60000:
-					#dangerDifference = True
-					redLEDPinBool = True
-					dropGuardPinBool = True
-					makeSafePinBool = True
+					dangerDifference = True
+					# redLEDPinBool = True
+					# dropGuardPinBool = True
+					# makeSafePinBool = True
 					#GPIO.output(makeSafePin, makeSafePinBool)
 					#GPIO.output(dropGuardPin, dropGuardPinBool)
 
@@ -353,9 +353,7 @@ def main():
 					dropGuardPinBool = True
 					makeSafePinBool = True
 
-					thread = Thread(target=playWarning)
-					thread.daemon = True
-					thread.start()
+
 
 				GPIO.output(makeSafePin, makeSafePinBool)
 				GPIO.output(dropGuardPin, dropGuardPinBool)
@@ -378,7 +376,7 @@ def main():
 				previousId = frame_id
 
 			else:
-				waitUntilPin(commsPin, True, .1)
+				waitUntilPin(commsPin, 1, .1)
 
 
 
